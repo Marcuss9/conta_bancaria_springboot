@@ -1,5 +1,7 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
+
+
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Cliente;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
 
@@ -10,7 +12,7 @@ public record ClienteRegistroDTO(
         String cpf,
         ContaResumoDTO contaDTO
 ) {
-    public Cliente toEntity(){
+    public Cliente toEntity() {
         return Cliente.builder()
                 .ativo(true)
                 .nome(this.nome)

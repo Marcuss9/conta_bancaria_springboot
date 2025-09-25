@@ -23,10 +23,10 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 120)
     private String nome;
 
-    @Column(nullable = false, length = 11, unique = true)
+    @Column(nullable = false, length = 11)
     private String cpf;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
@@ -34,4 +34,5 @@ public class Cliente {
 
     @Column(nullable = false)
     private Boolean ativo;
+
 }
