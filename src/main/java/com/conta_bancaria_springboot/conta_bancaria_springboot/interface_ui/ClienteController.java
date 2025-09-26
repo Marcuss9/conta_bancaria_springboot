@@ -6,6 +6,7 @@ import com.conta_bancaria_springboot.conta_bancaria_springboot.application.servi
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.reactive.ClientHttpResponseDecorator;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,5 +31,22 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> listarClientesAtivos() {
         return ResponseEntity.ok(service.listarClientesAtivos());
+    }
+
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<ClienteResponseDTO> buscarClienteAtivoPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(service.buscarClienteAtivoPorCpf(cpf));
+    }
+
+    @PutMapping("/{cpf}")
+    public ResponseEntity<ClienteResponseDTO> atualizarCliente(@PathVariable String cpf,
+                                                               @RequestBody ClienteRegistroDTO dto){
+        return ResponseEntity.ok(service.atualizarCliente(cpf, dto));
+    }
+
+    @DeleteMapping("/cpf/{cpf}")
+    public ResponseEntity<Void> deletarCliente(@PathVariable String cpf){
+        service.deletarCliente(cpf);
+        return ResponseEntity.noContent().build();
     }
 }
