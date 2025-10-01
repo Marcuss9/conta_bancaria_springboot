@@ -1,5 +1,6 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity;
 
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ContaResumoDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,5 +48,25 @@ public abstract class Conta {
             throw new IllegalArgumentException("Saldo insuficiente para o saque");
         }
         this.saldo = this.saldo.subtract(valor);
+    }
+
+    public void depositar(BigDecimal valor){
+     validarValorMaiorQueZero(valor);
+     this.saldo = this.saldo.add(valor);
+    }
+
+    protected static void validarValorMaiorQueZero(BigDecimal valor){
+        if (valor.compareTo(BigDecimal.ZERO) < 0){
+            throw new IllegalArgumentException("O valor da operação deve ser maior que zero.");
+        }
+    }
+
+    public void transferir(BigDecimal valor, Conta contaDestino) {
+        if (this.id.equals(contaDestino.getId())){
+            throw new IllegalArgumentException("Não é possível transferir para a mesma conta");
+        }
+
+        this.sacar(valor);
+        contaDestino.depositar(valor);
     }
 }

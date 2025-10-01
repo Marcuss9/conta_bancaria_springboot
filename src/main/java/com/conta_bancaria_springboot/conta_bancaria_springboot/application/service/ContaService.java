@@ -2,6 +2,8 @@ package com.conta_bancaria_springboot.conta_bancaria_springboot.application.serv
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ContaAtualizacaoDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ContaResumoDTO;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.TransferenciaDTO;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ValorSaqueDepositoDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaCorrente;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaPoupanca;
@@ -60,9 +62,25 @@ public class ContaService {
         return conta;
     }
 
-    public ContaResumoDTO sacar(String numeroConta, BigDecimal valor) {
+    public ContaResumoDTO sacar(String numeroConta, ValorSaqueDepositoDTO dto) {
         var conta = buscaContaAtivaPorNumero(numeroConta);
-        conta.sacar(valor);
+        conta.sacar(dto.valor());
         return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+
+    public ContaResumoDTO depositar(String numeroConta, ValorSaqueDepositoDTO dto){
+        var conta = buscaContaAtivaPorNumero(numeroConta);
+        conta.depositar(dto.valor());
+        return ContaResumoDTO.fromEntity(repository.save(conta));
+    }
+
+    public ContaResumoDTO transferir(String numeroConta, TransferenciaDTO dto) {
+        var contaOrigem = buscaContaAtivaPorNumero(numeroConta);
+        var contaDestino = buscaContaAtivaPorNumero(dto.contaDestino());
+
+        contaOrigem.transferir(dto.valor(), contaDestino);
+
+        repository.save(contaDestino);
+        return ContaResumoDTO.fromEntity(repository.save(contaOrigem));
     }
 }
