@@ -1,4 +1,11 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
-public class ContaAtualizacaoDTO {
+import java.math.BigDecimal;
+
+public record ContaAtualizacaoDTO(
+        BigDecimal saldo,
+        BigDecimal limite,
+        BigDecimal rendimento,
+        BigDecimal taxa
+) {
 }
