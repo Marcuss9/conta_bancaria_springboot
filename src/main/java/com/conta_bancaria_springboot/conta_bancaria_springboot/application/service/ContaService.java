@@ -7,6 +7,8 @@ import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.V
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaCorrente;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaPoupanca;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions.EntidadeNaoEncontrada;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions.RendimentoInvalidoException;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository.ContaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class ContaService {
     public ContaResumoDTO buscarContaPorNumero(String numero) {
         return ContaResumoDTO.fromEntity(
                 repository.findByNumeroAndAtivaTrue(numero)
-                        .orElseThrow(() -> new RuntimeException("Conta não encontrada"))
+                        .orElseThrow(() -> new EntidadeNaoEncontrada("Conta"))
         );
     }
 
@@ -57,7 +59,7 @@ public class ContaService {
 
     private Conta buscaContaAtivaPorNumero(String numeroDaConta) {
         var conta = repository.findByNumeroAndAtivaTrue(numeroDaConta).orElseThrow(
-                () -> new RuntimeException("Conta não encontrada")
+                () -> new EntidadeNaoEncontrada("Conta")
         );
         return conta;
     }
@@ -82,5 +84,14 @@ public class ContaService {
 
         repository.save(contaDestino);
         return ContaResumoDTO.fromEntity(repository.save(contaOrigem));
+    }
+
+    public ContaResumoDTO aplicarRendimento(String numeroDaConta) {
+        var conta = buscaContaAtivaPorNumero(numeroDaConta);
+        if (conta instanceof ContaPoupanca poupanca){
+            poupanca.aplicarRendimento();
+            return ContaResumoDTO.fromEntity(repository.save(conta));
+        }
+        throw new RendimentoInvalidoException();
     }
 }

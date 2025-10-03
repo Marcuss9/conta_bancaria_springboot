@@ -6,6 +6,8 @@ import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Cli
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaCorrente;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.ContaPoupanca;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions.EntidadeNaoEncontrada;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions.TipoDeContaInvalidaException;
 
 import java.math.BigDecimal;
 
@@ -21,6 +23,8 @@ public record ContaResumoDTO(
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)
+                    .limite(new BigDecimal("500.0"))
+                    .taxa(new BigDecimal("0.05"))
                     .build();
         } else if ("POUPANCA".equalsIgnoreCase(tipo)){
             return ContaPoupanca.builder()
@@ -28,9 +32,10 @@ public record ContaResumoDTO(
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)
+                    .rendimento(new BigDecimal("0.01"))
                     .build();
         }
-        return null;
+        throw new TipoDeContaInvalidaException();
     }
     public static ContaResumoDTO fromEntity(Conta c) {
         return new ContaResumoDTO(
