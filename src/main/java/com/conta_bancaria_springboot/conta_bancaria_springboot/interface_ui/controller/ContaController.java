@@ -1,16 +1,14 @@
-package com.conta_bancaria_springboot.conta_bancaria_springboot.interface_ui;
+package com.conta_bancaria_springboot.conta_bancaria_springboot.interface_ui.controller;
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ContaAtualizacaoDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ContaResumoDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.TransferenciaDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.ValorSaqueDepositoDTO;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.application.service.ContaService;
-import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
