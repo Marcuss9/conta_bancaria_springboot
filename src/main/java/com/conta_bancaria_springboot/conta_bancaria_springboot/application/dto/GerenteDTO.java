@@ -1,12 +1,12 @@
-/*package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
+package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Gerente;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.Role;
 import lombok.Builder;
 
-import javax.management.relation.Role;
 
 @Builder
-public record GerenteDTO {
+public record GerenteDTO (
     String id,
     String nome,
     String cpf,
@@ -16,25 +16,25 @@ public record GerenteDTO {
     Role role
 ) {
         public static GerenteDTO fromEntity(Gerente gerente) {
-            return ProfessorDTO.builder()
-                    .id(professor.getId())
-                    .nome(professor.getNome())
-                    .cpf(professor.getCpf())
-                    .email(professor.getEmail())
-                    .ativo(professor.isAtivo())
-                    .role(professor.getRole())
+            return GerenteDTO.builder()
+                    .id(gerente.getId())
+                    .nome(gerente.getNome())
+                    .cpf(gerente.getCpf())
+                    .email(gerente.getEmail())
+                    .ativo(gerente.isAtivo())
+                    .role(gerente.getRole())
                     .build();
         }
 
-        public Professor toEntity() {
-            return Professor.builder()
+        public Gerente toEntity() {
+            return Gerente.builder()
                     .id(this.id)
                     .nome(this.nome)
                     .cpf(this.cpf)
                     .email(this.email)
                     .senha(this.senha)
                     .ativo(this.ativo != null ? this.ativo : true)
-                    .role(this.role != null ? this.role : Role.PROFESSOR)
+                    .role(this.role != null ? this.role : Role.GERENTE)
                     .build();
         }
-}*/
+}

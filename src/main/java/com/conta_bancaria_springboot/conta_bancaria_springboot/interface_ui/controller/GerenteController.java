@@ -1,7 +1,7 @@
-/*package com.conta_bancaria_springboot.conta_bancaria_springboot.interface_ui.controller;
+package com.conta_bancaria_springboot.conta_bancaria_springboot.interface_ui.controller;
 
-import com.senai.modelo_autenticacao_autorizacao.application.dto.ProfessorDTO;
-import com.senai.modelo_autenticacao_autorizacao.application.service.ProfessorService;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.GerenteDTO;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.service.GerenteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,19 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GerenteController {
 
-    private final ProfessorService service;
+    private final GerenteService service;
 
     @GetMapping
-    public ResponseEntity<List<ProfessorDTO>> listarTodosProfessores() {
-        List<ProfessorDTO> professores = service.listarTodosProfessores();
+    public ResponseEntity<List<GerenteDTO>> listarTodosGerentes() {
+        List<GerenteDTO> professores = service.listarTodosGerentes();
         return ResponseEntity.ok(professores);
     }
 
     @PostMapping
-    public ResponseEntity<ProfessorDTO> cadastrarProfessor(@RequestBody ProfessorDTO dto) {
-        ProfessorDTO professorCriado = service.cadastrarProfessor(dto);
-        return ResponseEntity.ok(professorCriado);
+    public ResponseEntity<GerenteDTO> cadastrarGerentes(@RequestBody GerenteDTO dto) {
+        GerenteDTO gerenteCriado = service.cadastrarGerente(dto);
+        return ResponseEntity.ok(gerenteCriado);
     }
 
 }
-*/

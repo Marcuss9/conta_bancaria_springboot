@@ -1,4 +1,4 @@
-/*package com.conta_bancaria_springboot.conta_bancaria_springboot.infrastructure.security;
+package com.conta_bancaria_springboot.conta_bancaria_springboot.infrastructure.security;
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +28,4 @@ public class UsuarioDetailsService implements UserDetailsService {
                 List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name()))
         );
     }
-}*/
+}

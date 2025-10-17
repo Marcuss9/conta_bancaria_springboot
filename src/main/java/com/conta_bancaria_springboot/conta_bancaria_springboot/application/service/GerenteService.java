@@ -1,9 +1,9 @@
-/*package com.conta_bancaria_springboot.conta_bancaria_springboot.application.service;
+package com.conta_bancaria_springboot.conta_bancaria_springboot.application.service;
 
-import com.senai.modelo_autenticacao_autorizacao.application.dto.ProfessorDTO;
-import com.senai.modelo_autenticacao_autorizacao.domain.entity.Professor;
-import com.senai.modelo_autenticacao_autorizacao.domain.enums.Role;
-import com.senai.modelo_autenticacao_autorizacao.domain.repository.ProfessorRepository;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto.GerenteDTO;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Gerente;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.Role;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository.GerenteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,24 +15,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GerenteService {
 
-    private final ProfessorRepository professorRepository;
+    private final GerenteRepository gerenteRepository;
 
     private final PasswordEncoder encoder;
 
-    @PreAuthorize("hasAnyRole('ADMIN','PROFESSOR')")
-    public List<ProfessorDTO> listarTodosProfessores() {
-        return professorRepository.findAll().stream()
-                .map(ProfessorDTO::fromEntity)
+    @PreAuthorize("hasAnyRole('ADMIN','GERENTE')")
+    public List<GerenteDTO> listarTodosGerentes() {
+        return gerenteRepository.findAll().stream()
+                .map(GerenteDTO::fromEntity)
                 .toList();
     }
 
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ProfessorDTO cadastrarProfessor(ProfessorDTO dto) {
-        Professor entity = dto.toEntity();
+    public GerenteDTO cadastrarGerente(GerenteDTO dto) {
+        Gerente entity = dto.toEntity();
         entity.setSenha(encoder.encode(dto.senha()));
-        entity.setRole(Role.PROFESSOR);
-        professorRepository.save(entity);
-        return ProfessorDTO.fromEntity(entity);
+        entity.setRole(Role.GERENTE);
+        gerenteRepository.save(entity);
+        return GerenteDTO.fromEntity(entity);
     }
-}*/
+}
