@@ -1,38 +1,33 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Table(
         name = "cliente",
         uniqueConstraints = @UniqueConstraint(name = "uk_cliente_cpf", columnNames = "cpf")
 )
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
-    @Column(nullable = false, length = 120)
-    private String nome;
-
-    @Column(nullable = false, length = 11)
-    private String cpf;
-
+public class Cliente extends Usuario{
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Conta> contas;
 
-    @Column(nullable = false)
-    private Boolean ativo;
+    @Email
+    @NotBlank
+    @Column(nullable = false, unique = true)
+    protected String email;
 
+    @NotBlank
+    @Column(nullable = false)
+    protected String senha;
 }

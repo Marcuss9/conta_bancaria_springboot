@@ -19,6 +19,10 @@ public record ClienteResponseDTO(
         @NotBlank(message = "O CPF é obrigatório.")
         @CPF(message = "O CPF fornecido é inválido.")
         String cpf,
+        @NotBlank
+        String email,
+        @NotBlank
+        String senha,
         List<ContaResumoDTO> contas
 ) {
     public static ClienteResponseDTO fromEntity(Cliente cliente) {
@@ -29,6 +33,8 @@ public record ClienteResponseDTO(
                 cliente.getId(),
                 cliente.getNome(),
                 cliente.getCpf(),
+                cliente.getEmail(),
+                cliente.getSenha(),
                 contas
         );
     }

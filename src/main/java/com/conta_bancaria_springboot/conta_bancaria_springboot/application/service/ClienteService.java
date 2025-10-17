@@ -54,6 +54,8 @@ public class ClienteService {
         var cliente = buscarPorCpfClienteAtivo(cpf);
         cliente.setNome(dto.nome());
         cliente.setCpf(dto.cpf());
+        cliente.setEmail(dto.email());
+        cliente.setSenha(dto.senha());
         return ClienteResponseDTO.fromEntity(repository.save(cliente));
     }
 

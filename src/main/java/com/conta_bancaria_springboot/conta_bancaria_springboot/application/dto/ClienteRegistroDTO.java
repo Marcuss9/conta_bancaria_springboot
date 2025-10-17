@@ -1,14 +1,10 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
-
-
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Cliente;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Conta;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.Role;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.ArrayList;
@@ -23,7 +19,11 @@ public record ClienteRegistroDTO(
         String cpf,
         @NotNull(message = "Os dados da conta são obrigatórios.")
         @Valid
-        ContaResumoDTO contaDTO
+        ContaResumoDTO contaDTO,
+        @NotBlank
+        String email,
+        @NotBlank
+        String senha
 ) {
     public Cliente toEntity() {
         return Cliente.builder()
@@ -31,6 +31,9 @@ public record ClienteRegistroDTO(
                 .nome(this.nome)
                 .cpf(this.cpf)
                 .contas(new ArrayList<Conta>())
+                .email(this.email)
+                .senha(this.senha)
+                .role(Role.CLIENTE)
                 .build();
     }
 }
