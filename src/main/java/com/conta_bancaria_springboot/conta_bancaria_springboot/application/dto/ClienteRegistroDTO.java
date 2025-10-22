@@ -11,11 +11,8 @@ import java.util.ArrayList;
 
 public record ClienteRegistroDTO(
         @NotBlank(message = "O nome é obrigatório.")
-        @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres.")
-        @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ'\\s-]*$", message = "Nome deve conter apenas letras, espaços, apóstrofos ou hífens.")
         String nome,
         @NotBlank(message = "O CPF é obrigatório.")
-        @CPF(message = "O CPF fornecido é inválido.")
         String cpf,
         @NotNull(message = "Os dados da conta são obrigatórios.")
         @Valid

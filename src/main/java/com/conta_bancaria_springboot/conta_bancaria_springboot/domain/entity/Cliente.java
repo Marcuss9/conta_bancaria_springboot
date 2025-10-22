@@ -21,13 +21,4 @@ import java.util.List;
 public class Cliente extends Usuario{
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Conta> contas;
-
-    @Email
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    protected String email;
-
-    @NotBlank
-    @Column(nullable = false)
-    protected String senha;
 }
