@@ -33,10 +33,10 @@ public class ContaService {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENTE')")
     @Transactional(readOnly = true)
-    public ContaResumoDTO buscarContaPorNumero(String numero) {
+    public ContaResumoDTO buscarContaPorNumero(String numeroDaConta) {
         return ContaResumoDTO.fromEntity(
-                repository.findByNumeroAndAtivaTrue(numero)
-                        .orElseThrow(() -> new EntidadeNaoEncontrada("Conta"))
+                repository.findByNumeroAndAtivaTrue(numeroDaConta)
+                        .orElseThrow(() -> new EntidadeNaoEncontrada("Conta", "número", numeroDaConta))
         );
     }
 
@@ -65,7 +65,7 @@ public class ContaService {
     @PreAuthorize("hasAnyRole('ADMIN')")
     private Conta buscaContaAtivaPorNumero(String numeroDaConta) {
         return repository.findByNumeroAndAtivaTrue(numeroDaConta).orElseThrow(
-                () -> new EntidadeNaoEncontrada("Conta")
+                () -> new EntidadeNaoEncontrada("Conta", "número", numeroDaConta)
         );
     }
 

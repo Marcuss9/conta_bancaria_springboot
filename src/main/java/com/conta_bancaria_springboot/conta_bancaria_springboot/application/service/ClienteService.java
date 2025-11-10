@@ -75,7 +75,7 @@ public class ClienteService {
     @PreAuthorize("hasAnyRole('ADMIN')")
     private Cliente buscarPorCpfClienteAtivo(String cpf) {
         return repository.findByCpfAndAtivoTrue(cpf).orElseThrow(
-                () -> new EntidadeNaoEncontrada("Cliente")
+                () -> new EntidadeNaoEncontrada("Cliente", "CPF", cpf)
         );
     }
 }

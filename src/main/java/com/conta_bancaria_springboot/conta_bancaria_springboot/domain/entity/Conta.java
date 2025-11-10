@@ -30,6 +30,9 @@ public abstract class Conta {
     private String id;
 
     @Column(nullable = false, length = 20)
+    private String numeroDaConta;
+
+    @Column(nullable = false, length = 20)
     private String numero;
 
     @Column(nullable = false, precision = 20, scale = 2)
@@ -72,5 +75,13 @@ public abstract class Conta {
 
         this.sacar(valor);
         contaDestino.depositar(valor);
+    }
+
+    public void debitar(BigDecimal valor) {
+        validarValorMaiorQueZero(valor, "Débito");
+        if (this.saldo.compareTo(valor) < 0) {
+            throw new SaldoInsuficienteException();
+        }
+        this.saldo = this.saldo.subtract(valor);
     }
 }
