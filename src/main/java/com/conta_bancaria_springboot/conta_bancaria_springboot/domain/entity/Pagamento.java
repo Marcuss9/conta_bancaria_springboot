@@ -47,4 +47,6 @@ public class Pagamento {
             inverseJoinColumns = @JoinColumn(name = "taxa_id")
     )
     private Set<Taxa> taxas; // Set: evita duplicatas
+
+    //todo adicionar tipo de pagamento
 }
