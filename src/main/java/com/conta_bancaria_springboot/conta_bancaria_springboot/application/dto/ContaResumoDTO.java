@@ -25,6 +25,7 @@ public record ContaResumoDTO(
         if("CORRENTE".equalsIgnoreCase(tipo)){
             return ContaCorrente.builder()
                     .numero(this.numero)
+                    .numeroDaConta(this.numero)
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)
@@ -34,6 +35,7 @@ public record ContaResumoDTO(
         } else if ("POUPANCA".equalsIgnoreCase(tipo)){
             return ContaPoupanca.builder()
                     .numero(this.numero)
+                    .numeroDaConta(this.numero)
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)

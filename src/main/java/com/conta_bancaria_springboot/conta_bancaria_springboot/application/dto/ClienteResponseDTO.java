@@ -2,6 +2,7 @@ package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Cliente;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
+@Transactional
 public record ClienteResponseDTO(
         @NotBlank
         String id,
