@@ -1,5 +1,6 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity;
 
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.TipoPagamento;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,11 @@ public class Taxa {
     @Column(nullable = false)
     private BigDecimal valorFixo = BigDecimal.ZERO;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoPagamento tipoPagamento;
+
+    @Builder.Default
     @Column(nullable = false)
     private boolean ativo = true;
 

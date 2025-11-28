@@ -46,7 +46,7 @@ public class TaxaController {
             }
     )
     @PostMapping
-    public ResponseEntity<TaxaResponseDTO> registrarTaxa(@Valid @RequestBody TaxaRegistroDTO dto) {
+    public ResponseEntity<TaxaResponseDTO> registrarTaxa(@Valid @org.springframework.web.bind.annotation.RequestBody TaxaRegistroDTO dto) {
         TaxaResponseDTO novaTaxa = service.registrarTaxa(dto);
         return ResponseEntity.created(
                 URI.create("/api/taxas/" + novaTaxa.id())

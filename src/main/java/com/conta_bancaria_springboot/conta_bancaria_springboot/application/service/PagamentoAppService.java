@@ -14,6 +14,7 @@ import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository.PagamentoRepository;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.repository.TaxaRepository;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.service.PagamentoDomainService;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.infrastructure.iot.MqttAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,31 +36,29 @@ public class PagamentoAppService {
     private final TaxaRepository taxaRepository;
     private final PagamentoDomainService domainService;
 
-    // Usamos 'NOT_SUPPORTED' pois vamos controlar a transação manualmente
-    // para garantir que o pagamento seja salvo mesmo em caso de falha
+
     @Transactional(noRollbackFor = {SaldoInsuficienteException.class, PagamentoInvalidoException.class})
-    @PreAuthorize("hasRole('CLIENTE')") // Segurança a nível de método
+    @PreAuthorize("hasRole('CLIENTE')")
     public PagamentoResponseDTO realizarPagamento(PagamentoRequestDTO dto, String emailAutenticado) {
 
         Conta conta = contaRepository.findByNumeroAndAtivaTrue(dto.numeroDaContaOrigem())
                 .orElseThrow(() -> new EntidadeNaoEncontrada("Conta", "número", dto.numeroDaContaOrigem()));
 
-        // Garante que o usuário logado é o dono da conta
+        // Valida se a conta pertence ao usuário logado
         if (!conta.getCliente().getEmail().equals(emailAutenticado)) {
             // Lança uma exceção que será tratada pelo GlobalExceptionHandler
             throw new AccessDeniedException("O usuário autenticado não tem permissão para usar esta conta.");
         }
 
-        List<Taxa> taxas = taxaRepository.findAllById(dto.taxaIds());
-        if (taxas.size() != dto.taxaIds().size()) {
-            throw new TaxaInvalidaException("Uma ou mais taxas informadas não foram encontradas.");
-        }
+        // Busca automatica de taxas no banco
+        List<Taxa> taxasAplicaveis = taxaRepository.findAllByTipoPagamentoAndAtivoTrue(dto.tipoPagamento());
 
-        BigDecimal valorFinal = domainService.calcularValorFinal(dto.valorPago(), taxas);
+        // Calcula o valor final
+        BigDecimal valorFinal = domainService.calcularValorFinal(dto.valorPago(), taxasAplicaveis);
         StatusPagamento status;
 
+        // Realizar o debito
         try {
-            // Valida o boleto
             domainService.validarBoleto(dto.boleto());
 
             // Valida o saldo e debita o valor da conta
@@ -67,6 +66,7 @@ public class PagamentoAppService {
 
             // Se chegou aqui, o pagamento foi sucesso
             status = StatusPagamento.SUCESSO;
+            // Atualiza saldo no banco
             contaRepository.save(conta);
 
         } catch (SaldoInsuficienteException e) {
@@ -75,15 +75,15 @@ public class PagamentoAppService {
             status = StatusPagamento.FALHA_BOLETO_VENCIDO;
         }
 
-        // Salva o registro do pagamento independentemente do status
+        // Salva o registro do pagamento com Sucesso
         Pagamento pagamento = Pagamento.builder()
                 .conta(conta)
                 .boleto(dto.boleto())
                 .valorPago(dto.valorPago())
                 .valorTotalCobrado(valorFinal)
                 .dataPagamento(LocalDateTime.now())
-                .status(status)
-                .taxas(new HashSet<>(taxas))
+                .status(StatusPagamento.SUCESSO)
+                .taxas(new HashSet<>(taxasAplicaveis))
                 .build();
 
         Pagamento pagamentoSalvo = pagamentoRepository.save(pagamento);
@@ -98,9 +98,8 @@ public class PagamentoAppService {
         return PagamentoResponseDTO.fromEntity(pagamentoSalvo);
     }
 
-    /**
-     * Lista todos os pagamentos (sucesso ou falha) associados ao usuário autenticado.
-     */
+
+     // Lista todos os pagamentos (sucesso ou falha) associados ao usuário autenticado.
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('CLIENTE', 'ADMIN')") // Cliente pode ver o seu, Admin pode ver o de todos (se implementado)
     public List<PagamentoResponseDTO> listarPagamentosDoUsuario(String emailAutenticado) {

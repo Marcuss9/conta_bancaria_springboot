@@ -1,5 +1,6 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.TipoPagamento;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,8 +20,11 @@ public record PagamentoRequestDTO(
         @Positive(message = "O valor do pagamento deve ser positivo")
         BigDecimal valorPago,
 
-        // Lista de IDs das taxas que devem ser aplicadas
+        @NotNull(message = "Informe o tipo do pagamento (Ex: BOLETO, PIX)")
+        TipoPagamento tipoPagamento
+
+        /* Lista de IDs das taxas que devem ser aplicadas
         @NotEmpty(message = "Pelo menos uma taxa deve ser informada (mesmo que seja uma taxa 'zero')")
-        List<String> taxaIds
+        List<String> taxaIds*/
 ) {
 }

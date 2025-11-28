@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 public class PagamentoDomainService {
-    /**
-     * Calcula o valor final a ser debitado, somando o valor principal e as taxas.
-     */
+
+     //Calcula o valor final a ser debitado, somando o valor principal e as taxas.
+
     public BigDecimal calcularValorFinal(BigDecimal valorPrincipal, List<Taxa> taxas) {
         BigDecimal totalTaxas = BigDecimal.ZERO;
 
@@ -25,9 +25,9 @@ public class PagamentoDomainService {
         return valorPrincipal.add(totalTaxas);
     }
 
-    /**
-     * Valida se o boleto é pagável (ex: não vencido).
-     */
+
+     //Valida se o boleto é pagável (ex: não vencido).
+
     public void validarBoleto(String boleto) {
         // Simulação da validação de boleto
         if (boleto.startsWith("BOLETO_VENCIDO")) {
@@ -35,9 +35,9 @@ public class PagamentoDomainService {
         }
     }
 
-    /**
-     * Valida se a conta tem saldo suficiente (incluindo limite) para o débito.
-     */
+
+     //Valida se a conta tem saldo suficiente (incluindo limite) para o débito.
+
     public void validarSaldo(Conta conta, BigDecimal valorFinal) {
         conta.debitar(valorFinal);
     }
