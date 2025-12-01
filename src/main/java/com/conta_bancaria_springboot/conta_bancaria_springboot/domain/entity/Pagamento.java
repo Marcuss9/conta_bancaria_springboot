@@ -1,6 +1,7 @@
 package com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity;
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.StatusPagamento;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.TipoPagamento;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,10 @@ public class Pagamento {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusPagamento status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoPagamento tipo;
 
     @ManyToMany
     @JoinTable(

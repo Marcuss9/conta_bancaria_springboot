@@ -2,6 +2,7 @@ package com.conta_bancaria_springboot.conta_bancaria_springboot.application.dto;
 
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.entity.Pagamento;
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.StatusPagamento;
+import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.enums.TipoPagamento;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public record PagamentoResponseDTO(
         BigDecimal valorTotalCobrado,
         LocalDateTime dataPagamento,
         StatusPagamento status,
+        TipoPagamento tipo,
         List<TaxaResponseDTO> taxasAplicadas
 ) {
     public static PagamentoResponseDTO fromEntity(Pagamento pagamento) {
@@ -31,6 +33,7 @@ public record PagamentoResponseDTO(
                 pagamento.getValorTotalCobrado(),
                 pagamento.getDataPagamento(),
                 pagamento.getStatus(),
+                pagamento.getTipo(),
                 taxasDTO
         );
     }

@@ -84,6 +84,7 @@ public class PagamentoAppService {
                 .dataPagamento(LocalDateTime.now())
                 .status(StatusPagamento.SUCESSO)
                 .taxas(new HashSet<>(taxasAplicaveis))
+                .tipo(dto.tipoPagamento())
                 .build();
 
         Pagamento pagamentoSalvo = pagamentoRepository.save(pagamento);

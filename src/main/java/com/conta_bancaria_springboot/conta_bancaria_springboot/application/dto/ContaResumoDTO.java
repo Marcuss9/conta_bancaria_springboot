@@ -10,13 +10,12 @@ import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions
 import com.conta_bancaria_springboot.conta_bancaria_springboot.domain.exceptions.TipoDeContaInvalidaException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Random;
 
 import java.math.BigDecimal;
 
 public record ContaResumoDTO(
-        @NotNull
         String numero,
-        @NotNull
         String numeroDaConta,
         @NotNull
         String tipo,
@@ -24,10 +23,11 @@ public record ContaResumoDTO(
         BigDecimal saldo
 ) {
     public Conta toEntity(Cliente cliente){
+        String numeroGerado = gerarNumeroContaAleatorio();
         if("CORRENTE".equalsIgnoreCase(tipo)){
             return ContaCorrente.builder()
-                    .numero(this.numero)
-                    .numeroDaConta(this.numeroDaConta)
+                    .numero(numeroGerado)
+                    .numeroDaConta(numeroGerado)
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)
@@ -46,6 +46,13 @@ public record ContaResumoDTO(
         }
         throw new TipoDeContaInvalidaException();
     }
+
+    private String gerarNumeroContaAleatorio() {
+        Random random = new Random();
+        int numero = 100 + random.nextInt(999); // Gera entre 100 e 999
+        return String.valueOf(numero);
+    }
+
     public static ContaResumoDTO fromEntity(Conta c) {
         return new ContaResumoDTO(
                 c.getNumero(),
