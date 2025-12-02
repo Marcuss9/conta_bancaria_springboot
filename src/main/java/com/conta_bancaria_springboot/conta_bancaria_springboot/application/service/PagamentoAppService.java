@@ -60,13 +60,8 @@ public class PagamentoAppService {
         // Realizar o debito
         try {
             domainService.validarBoleto(dto.boleto());
-
-            // Valida o saldo e debita o valor da conta
             conta.debitar(valorFinal);
-
-            // Se chegou aqui, o pagamento foi sucesso
             status = StatusPagamento.SUCESSO;
-            // Atualiza saldo no banco
             contaRepository.save(conta);
 
         } catch (SaldoInsuficienteException e) {

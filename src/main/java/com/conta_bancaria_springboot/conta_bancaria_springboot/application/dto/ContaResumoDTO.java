@@ -36,8 +36,8 @@ public record ContaResumoDTO(
                     .build();
         } else if ("POUPANCA".equalsIgnoreCase(tipo)){
             return ContaPoupanca.builder()
-                    .numero(this.numero)
-                    .numeroDaConta(this.numeroDaConta)
+                    .numero(numeroGerado)
+                    .numeroDaConta(numeroGerado)
                     .saldo(this.saldo)
                     .ativa(true)
                     .cliente(cliente)
